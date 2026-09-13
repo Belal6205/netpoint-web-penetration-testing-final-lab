@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice #<%= order.id %> · NetPoint Store</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .invoice-sheet { background:#fff; color:#0f172a; }
+    @media print {
+      .no-print { display:none !important; }
+      body { background:#fff; }
+      .invoice-sheet { box-shadow:none; border:none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container section invoice-wrap">
+  <div class="actions no-print" style="margin-bottom:16px; display:flex; gap:8px;">
+    <a class="btn btn-outline btn-sm" href="/orders">← All orders</a>
+    <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print invoice</button>
+    <a class="btn btn-primary btn-sm" href="/orders/<%= order.id %>/receipt">Download receipt (.txt)</a>
+  </div>
+
+  <div class="card pad invoice-sheet">
+    <header class="inv-head row-between">
+      <div>
+        <div class="brand inv-brand"><span class="brand-mark">N</span> NetPoint<b>Store</b></div>
+        <div class="muted small">12 El Nasr St, Nasr City, Cairo<br>support@netpoint.store · +20 100 555 0101<br>VAT EG-834-2209</div>
+      </div>
+      <div style="text-align:right">
+        <h1 class="inv-title">INVOICE</h1>
+        <p><b>#<%= order.id %></b><br>
+           Date: <%= new Date(order.created_at).toISOString().slice(0,10) %><br>
+           Status: <span class="badge status-<%= order.status %>"><%= order.status %></span></p>
+      </div>
+    </header>
+
+    <section class="inv-parties">
+      <div>
+        <h4>Billed to</h4>
+        <p><b><%= customer.display_name || customer.username %></b><br>
+           <%= customer.email %><br>
+           <%= customer.phone || '—' %><br>
+           <%= order.ship_address || customer.address || '—' %></p>
+      </div>
+      <div>
+        <h4>Loyalty</h4>
+        <p class="muted">Member since <%= new Date(customer.created_at).toISOString().slice(0,10) %><br>
+        Points earned with this order: <b><%= Math.round(Number(order.total)) / 100 | 0 %></b></p>
+      </div>
+    </section>
+
+    <table class="table inv-table">
+      <thead><tr><th>Item</th><th>Qty</th><th style="text-align:right">Unit price</th><th style="text-align:right">Line total</th></tr></thead>
+      <tbody>
+        <% for (const it of items) { %>
+          <tr>
+            <td><%= it.name %></td>
+            <td><%= it.qty %></td>
+            <td style="text-align:right">EGP <%= Number(it.unit_price).toFixed(2) %></td>
+            <td style="text-align:right">EGP <%= (Number(it.unit_price) * it.qty).toFixed(2) %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+    <section class="inv-totals">
+      <div class="row-between"><span class="muted">Discount applied</span><b><%= order.discount_percent %>%</b></div>
+      <% if (order.coupon_codes) { %><div class="row-between"><span class="muted">Coupon codes</span><b><%= order.coupon_codes %></b></div><% } %>
+      <div class="row-between total-row"><b>Grand total</b><b class="price">EGP <%= Number(order.total).toFixed(2) %></b></div>
+    </section>
+
+    <% if (giftHtml) { %>
+      <section class="gift-note">
+        <h4>Gift note</h4>
+        <blockquote class="gift-rendered"><%- giftHtml %></blockquote>
+      </section>
+    <% } %>
+
+    <footer class="inv-footer muted small center-text">
+      Thank you for shopping with NetPoint Store — paid electronically, no signature required.
+    </footer>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error · NetPoint Store</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<main class="container section">
+  <div class="card pad">
+    <h1>Something went wrong</h1>
+    <p class="alert alert-bad"><%= typeof error !== 'undefined' && error && error.message ? error.message : 'Unexpected server error.' %></p>
+    <% if (typeof debugErrors !== 'undefined' && debugErrors && typeof error !== 'undefined' && error && error.stack) { %>
+      <pre class="error-stack"><%= error.stack %></pre>
+    <% } %>
+    <a class="link" href="/">← Back to NetPoint Store</a>
+  </div>
+</main>
+</body>
+</html>

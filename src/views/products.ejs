@@ -1,0 +1,60 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section">
+  <div class="catalog-layout">
+    <aside class="filters card">
+      <h3>Categories</h3>
+      <ul class="filter-list">
+        <li><a href="/products<%= q ? '?search=' + encodeURIComponent(q) : '' %>" class="<%= !String(cat || '') ? 'active' : '' %>">All products</a></li>
+        <% for (const c of categories) { %>
+          <li>
+            <a href="/products?category=<%= c.id %><%= q ? '&search=' + encodeURIComponent(q) : '' %>"
+               class="<%= String(cat || '') === String(c.id) ? 'active' : '' %>"><%= c.name %></a>
+          </li>
+        <% } %>
+      </ul>
+      <div class="muted small" style="margin-top:14px">
+        Can't find something? <a class="link" href="/contact">Ask us</a> and we'll source it.
+      </div>
+    </aside>
+
+    <div class="catalog-main">
+      <form class="search-bar" method="get" action="/products">
+        <% if (String(cat || '')) { %><input type="hidden" name="category" value="<%= cat %>"><% } %>
+        <input class="input input-lg" type="text" name="search" placeholder="Search routers, cables, cameras…" value="<%= q %>" autofocus>
+        <button class="btn btn-primary btn-lg">Search</button>
+      </form>
+
+      <% if (q) { %>
+        <% /* Show the customer exactly what they searched for */ %>
+        <p class="results-for">Results for “<%- q %>”</p>
+      <% } %>
+
+      <% if (products.length === 0) { %>
+        <div class="card empty-state">
+          <h3>No matches</h3>
+          <p class="muted">Nothing matched your search. Try a different keyword or browse the categories.</p>
+        </div>
+      <% } else { %>
+        <div class="grid grid-3">
+          <% for (const p of products) { %>
+            <a class="card product-card" href="/product/<%= p.id %>">
+              <div class="thumb"><img src="<%= p.image_url %>" alt="<%= p.name %>" loading="lazy"></div>
+              <div class="card-body">
+                <span class="chip"><%= p.category_name || 'Store' %></span>
+                <h3><%= p.name %></h3>
+                <div class="row-between">
+                  <strong class="price">EGP <%= Number(p.price).toFixed(2) %></strong>
+                  <span class="<%= p.stock > 0 ? 'stock-ok' : 'stock-bad' %>"><%= p.stock > 0 ? p.stock + ' in stock' : 'Backorder' %></span>
+                </div>
+              </div>
+            </a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

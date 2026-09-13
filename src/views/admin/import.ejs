@@ -1,0 +1,51 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="container section narrow-lg">
+  <nav class="crumbs muted small"><a href="/">Home</a> / <a href="/admin">Admin</a> / <b>XML import</b></nav>
+
+  <h1>Catalog XML import</h1>
+  <p class="muted">
+    Import products from the warehouse ERP export. The parser accepts the legacy
+    catalog-sync format including customer DTD entity shortcuts.
+  </p>
+
+  <% if (typeof msg !== 'undefined' && msg) { %><div class="alert alert-ok"><%= msg %></div><% } %>
+  <% if (typeof err !== 'undefined' && err) { %>
+    <div class="alert alert-bad"><b>Import failed:</b> <%= err %></div>
+  <% } %>
+
+  <div class="card pad">
+    <form method="post" action="/admin/import" enctype="multipart/form-data">
+      <label>Upload ERP export (.xml)
+        <input class="input" type="file" name="xmlfile" accept=".xml,text/xml">
+      </label>
+      <label>…or paste XML here
+        <textarea class="input code-area" name="xmltext" rows="12" placeholder="<?xml version=&quot;1.0&quot;?>
+<!DOCTYPE catalog [
+  <!ENTITY np &quot;NetPoint&quot;>
+]>
+<catalog>
+  <product>
+    <name>&np; USB-C Dock</name>
+    <price>49.99</price>
+    <stock>25</stock>
+    <category>Accessories</category>
+  </product>
+</catalog>"></textarea>
+      </label>
+      <button class="btn btn-primary">Run import</button>
+    </form>
+  </div>
+
+  <% if (typeof importedNames !== 'undefined' && importedNames && importedNames.length > 0) { %>
+    <div class="card pad">
+      <h3>Imported product names</h3>
+      <ul>
+        <% for (const n of importedNames) { %><li><code><%= n %></code></li><% } %>
+      </ul>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/foot') %>

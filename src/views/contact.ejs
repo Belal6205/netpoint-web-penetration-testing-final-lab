@@ -1,0 +1,38 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section auth-wrap">
+  <div class="card pad auth-card wide-card">
+    <h1>Contact us</h1>
+    <p class="muted">Questions about an order, a product, or a bulk quote? Write to us — real humans reply.</p>
+
+    <% if (typeof msg !== 'undefined' && msg) { %><div class="alert alert-ok"><%= msg %></div><% } %>
+    <% if (typeof err !== 'undefined' && err) { %><div class="alert alert-bad"><%= err %></div><% } %>
+
+    <form method="post" action="/contact">
+      <div class="form-row">
+        <label>Your name
+          <input class="input" name="name" required placeholder="Jane Doe">
+        </label>
+        <label>Email
+          <input class="input" type="email" name="email" required placeholder="you@example.com">
+        </label>
+      </div>
+      <label>Subject
+        <input class="input" name="subject" placeholder="Order #1001 question">
+      </label>
+      <label>Message
+        <textarea class="input" name="message" rows="5" required placeholder="How can we help?"></textarea>
+      </label>
+      <button class="btn btn-primary btn-lg">Send message</button>
+    </form>
+
+    <hr>
+    <div class="muted small">
+      📍 12 El Nasr St, Nasr City, Cairo · ☎ +20 100 555 0101 · ✉ support@netpoint.store<br>
+      Support hours: Sun–Thu, 9:00–17:00 EET.
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

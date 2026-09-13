@@ -1,0 +1,23 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section auth-wrap">
+  <div class="card pad auth-card">
+    <h1>Reset password</h1>
+    <p class="muted">Enter the email on your account and we'll send a reset link.</p>
+
+    <% if (typeof msg !== 'undefined' && msg) { %><div class="alert alert-ok"><%= msg %></div><% } %>
+    <% if (typeof err !== 'undefined' && err) { %><div class="alert alert-bad"><%= err %></div><% } %>
+
+    <form method="post" action="/forgot">
+      <label>Email address
+        <input class="input" type="email" name="email" placeholder="you@example.com" required autofocus>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg">Send reset link</button>
+    </form>
+
+    <div class="auth-links muted small"><a class="link" href="/login">Back to sign in</a></div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

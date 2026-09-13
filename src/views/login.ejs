@@ -1,0 +1,27 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section auth-wrap">
+  <div class="card pad auth-card">
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to your NetPoint account.</p>
+
+    <form method="post" action="/login">
+      <input type="hidden" name="next" value="<%= typeof next !== 'undefined' ? next : '' %>">
+      <label>Email address
+        <input class="input" type="email" name="email" placeholder="you@example.com" required autofocus>
+      </label>
+      <label>Password
+        <input class="input" type="password" name="password" maxlength="8" placeholder="Your password" required>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg">Sign in</button>
+    </form>
+
+    <div class="auth-links muted small">
+      <a class="link" href="/forgot">Forgot password?</a> ·
+      New here? <a class="link" href="/register">Create an account</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

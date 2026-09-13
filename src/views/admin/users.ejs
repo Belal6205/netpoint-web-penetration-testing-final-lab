@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="container section">
+  <nav class="crumbs muted small"><a href="/">Home</a> / <a href="/admin">Admin</a> / <b>Customers</b></nav>
+  <div class="admin-layout">
+    <aside class="card pad admin-side">
+      <h3>Back office</h3>
+      <a class="link block-link" href="/admin">Dashboard</a>
+      <a class="link block-link" href="/admin/products">Catalog</a>
+      <a class="link block-link" href="/admin/orders">Orders</a>
+      <a class="link block-link active-link" href="/admin/users">Customers</a>
+      <a class="link block-link" href="/admin/import">XML import</a>
+    </aside>
+
+    <div>
+      <h1>Customers</h1>
+      <div class="card pad">
+        <table class="table">
+          <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Credit</th><th>Points</th><th>Role</th><th style="text-align:right"></th></tr></thead>
+          <tbody>
+            <% for (const u of users) { %>
+              <tr data-uid="<%= u.id %>">
+                <td><%= u.id %></td>
+                <td>@<%= u.username %></td>
+                <td class="muted"><%= u.email %></td>
+                <td>EGP <%= Number(u.balance).toFixed(2) %></td>
+                <td><%= u.points %></td>
+                <td>
+                  <select class="input input-sm role-select">
+                    <option value="customer" <%= u.role === 'customer' ? 'selected' : '' %>>customer</option>
+                    <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>admin</option>
+                  </select>
+                </td>
+                <td style="text-align:right; white-space:nowrap">
+                  <button class="btn btn-outline btn-sm" onclick="saveUserRole(<%= u.id %>, this)">Save role</button>
+                  <button class="btn btn-ghost btn-sm" onclick="deleteUser(<%= u.id %>)">Delete</button>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/foot') %>

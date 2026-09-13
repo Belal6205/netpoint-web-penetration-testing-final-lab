@@ -1,0 +1,60 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<% const subtotal = items.reduce((s, i) => s + Number(i.db_price) * i.qty, 0); %>
+
+<section class="container section">
+  <h1>Your cart</h1>
+
+  <% if (items.length === 0) { %>
+    <div class="card pad empty-state">
+      <p class="muted">Your cart is empty. <a class="link" href="/products">Browse the catalog →</a></p>
+    </div>
+  <% } else { %>
+    <div class="cart-layout">
+      <div class="card pad">
+        <table class="table cart-table">
+          <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th style="text-align:right">Total</th><th></th></tr></thead>
+          <tbody>
+            <% for (const it of items) { %>
+              <tr data-product="<%= it.product_id %>">
+                <td class="cart-item-name">
+                  <img class="cart-thumb" src="<%= it.image_url %>" alt="">
+                  <span><%= it.name %></span>
+                </td>
+                <td>EGP <%= Number(it.db_price).toFixed(2) %></td>
+                <td>
+                  <input class="input qty-input cart-qty" type="number" min="1" max="99"
+                         value="<%= it.qty %>" onchange="updateQty(this, <%= it.product_id %>)">
+                </td>
+                <td class="line-total" style="text-align:right">EGP <%= (Number(it.db_price) * it.qty).toFixed(2) %></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="removeItem(<%= it.product_id %>)">✕</button></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card pad summary">
+        <h3>Order summary</h3>
+        <div class="row-between"><span class="muted">Items</span><b id="sum-items">EGP <%= subtotal.toFixed(2) %></b></div>
+        <div class="row-between muted small"><span>Coupons are applied at checkout</span></div>
+        <hr>
+        <div class="row-between total-row"><b>Total</b><b class="price" id="sum-total">EGP <%= subtotal.toFixed(2) %></b></div>
+        <a href="/checkout" class="btn btn-primary btn-block btn-lg">Proceed to checkout</a>
+        <a href="/products" class="link center-link small muted">or keep shopping</a>
+      </div>
+    </div>
+
+    <div class="card pad coupon-box">
+      <h3>Have a coupon?</h3>
+      <div class="form-row">
+        <input class="input" id="coupon-code" placeholder="e.g. WELCOME10">
+        <button class="btn btn-outline" onclick="checkCoupon()">Check code</button>
+      </div>
+      <div id="coupon-result" class="small"></div>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/foot') %>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#e2e8f0"/>
+  <text x="200" y="150" text-anchor="middle" font-family="Arial" font-size="22" fill="#94a3b8">Product image</text>
+  <text x="200" y="180" text-anchor="middle" font-family="Arial" font-size="13" fill="#94a3b8">NETPOINT STORE</text>
+</svg>

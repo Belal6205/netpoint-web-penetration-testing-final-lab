@@ -1,0 +1,36 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section">
+  <h1>Your orders</h1>
+
+  <% if (orders.length === 0) { %>
+    <div class="card pad empty-state">
+      <p class="muted">No orders yet. <a class="link" href="/products">Find something you like →</a></p>
+    </div>
+  <% } else { %>
+    <div class="card pad">
+      <table class="table">
+        <thead>
+          <tr><th>Order</th><th>Date</th><th>Status</th><th>Total</th><th style="text-align:right"></th></tr>
+        </thead>
+        <tbody>
+          <% for (const o of orders) { %>
+            <tr>
+              <td><b>#<%= o.id %></b></td>
+              <td><%= new Date(o.created_at).toISOString().slice(0,10) %></td>
+              <td><span class="badge status-<%= o.status %>"><%= o.status %></span></td>
+              <td>EGP <%= Number(o.total).toFixed(2) %><% if (o.discount_percent > 0) { %> <span class="muted small">(−<%= o.discount_percent %>%)</span><% } %></td>
+              <td style="text-align:right">
+                <a class="btn btn-outline btn-sm" href="/orders/<%= o.id %>">View</a>
+                <a class="btn btn-ghost btn-sm" href="/orders/<%= o.id %>/receipt">Receipt</a>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/foot') %>

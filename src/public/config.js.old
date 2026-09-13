@@ -1,0 +1,18 @@
+// config.js.old - replaced by env vars in 2023, kept "just in case"
+// FIXME: remove before production launch
+module.exports = {
+  port: 9000,
+  db: {
+    host: 'db',
+    user: 'root',
+    password: 'rootpw',
+    database: 'netpoint',
+  },
+  sessionSecret: 'netpoint_super_secret_2024',
+  internalApiToken: 'npt_internal_9f2c1',
+  stripeKey: 'sk_test_51NPointDemoKeyDoNotUseInProd0000',
+  adminBootstrap: {
+    email: 'admin@netpoint.store',
+    password: 'admin123', // rotated quarterly by IT... supposedly
+  },
+};

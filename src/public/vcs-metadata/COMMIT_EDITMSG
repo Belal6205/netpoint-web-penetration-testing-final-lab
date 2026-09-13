@@ -1,0 +1,1 @@
+fix: drop legacy config file, secrets moved to env

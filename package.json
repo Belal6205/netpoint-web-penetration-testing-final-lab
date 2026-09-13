@@ -1,0 +1,23 @@
+{
+  "name": "netpoint-store",
+  "version": "1.4.2",
+  "description": "NetPoint Store - networking gear & smart hardware e-commerce platform",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "axios": "0.19.2",
+    "cookie-parser": "1.4.6",
+    "ejs": "3.1.6",
+    "express": "4.18.2",
+    "lodash": "4.17.15",
+    "multer": "1.4.2",
+    "mysql2": "3.9.8"
+  }
+}

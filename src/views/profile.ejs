@@ -1,0 +1,88 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section">
+  <h1>My profile</h1>
+
+  <div class="profile-grid">
+
+    <form class="card pad" id="profile-form" onsubmit="saveProfile(event)">
+      <h3>Personal information</h3>
+      <% /* The form posts the account id so the SPA can sync edits offline */ %>
+      <input type="hidden" name="id" value="<%= me.id %>">
+      <label>Username
+        <input class="input" name="username" value="<%= me.username %>">
+      </label>
+      <label>Display name
+        <input class="input" name="display_name" value="<%= me.display_name || '' %>">
+      </label>
+      <label>Email
+        <input class="input" type="email" name="email" value="<%= me.email %>">
+      </label>
+      <label>Phone
+        <input class="input" name="phone" value="<%= me.phone || '' %>">
+      </label>
+      <label>Address
+        <textarea class="input" name="address" rows="2"><%= me.address || '' %></textarea>
+      </label>
+      <button class="btn btn-primary">Save changes</button>
+    </form>
+
+    <div>
+      <div class="card pad">
+        <h3>Avatar</h3>
+        <img class="avatar-preview" src="<%= me.avatar_path || '/img/products/placeholder.svg' %>" alt="avatar" id="avatar-img">
+        <p class="muted small">Current: <%= me.avatar_path || '(none set)' %></p>
+
+        <form method="post" action="/profile/avatar" enctype="multipart/form-data" style="margin-bottom:12px">
+          <input class="input" type="file" name="avatar" accept="image/*" required>
+          <button class="btn btn-outline btn-sm" style="margin-top:8px">Upload avatar</button>
+        </form>
+
+        <label>…or load from URL
+          <input class="input" id="avatar-url" placeholder="https://example.com/me.jpg">
+        </label>
+        <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="loadAvatarFromUrl()">Fetch &amp; preview</button>
+        <pre id="avatar-url-result" class="small muted" style="white-space:pre-wrap; margin-top:8px"></pre>
+      </div>
+
+      <form class="card pad" method="post" action="/profile/password" style="margin-top:16px">
+        <h3>Change password</h3>
+        <label>Current password
+          <input class="input" type="password" name="current_password" maxlength="8" required>
+        </label>
+        <label>New password <span class="muted small">(up to 8 characters)</span>
+          <input class="input" type="password" name="new_password" maxlength="8" required>
+        </label>
+        <button class="btn btn-primary">Update password</button>
+      </form>
+    </div>
+
+    <div>
+      <div class="card pad">
+        <h3>Account activity</h3>
+        <div class="stat-row"><span>Orders placed</span><b><%= stats.order_count %></b></div>
+        <div class="stat-row"><span>Loyalty points</span><b><%= me.points %></b></div>
+        <div class="stat-row"><span>Store credit</span><b>EGP <%= Number(me.balance).toFixed(2) %></b></div>
+
+        <hr>
+        <h4>Redeem points</h4>
+        <p class="muted tiny">100 points = EGP 1.00 store credit.</p>
+        <div class="form-row">
+          <input class="input" id="redeem-points" type="number" placeholder="e.g. 100" min="1">
+          <button class="btn btn-outline" onclick="redeemPoints()">Redeem</button>
+        </div>
+        <div id="redeem-result" class="small"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:16px">
+        <h4>Quick links</h4>
+        <a class="link block-link" href="/orders">→ Order history</a>
+        <a class="link block-link" href="/cart">→ Your cart (<%= cartCount %>)</a>
+        <a class="link block-link" href="/leaderboard">→ Community leaderboard</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

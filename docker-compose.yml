@@ -1,0 +1,55 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: netpoint
+      MYSQL_USER: netpoint
+      MYSQL_PASSWORD: npt_store_2024
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpw"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - netpoint
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 9000
+      NODE_ENV: development
+      DEBUG_ERRORS: "true"
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: rootpw
+      DB_NAME: netpoint
+      SESSION_SECRET: netpoint_super_secret_2024
+      INTERNAL_API_TOKEN: npt_internal_9f2c1
+    ports:
+      - "${APP_PORT:-9000}:9000"
+    networks:
+      - netpoint
+
+  inventory-sync:
+    build: ./internal-service
+    restart: unless-stopped
+    # Intentionally NOT published to the host - internal service only.
+    networks:
+      - netpoint
+
+volumes:
+  dbdata:
+
+networks:
+  netpoint:
+    driver: bridge

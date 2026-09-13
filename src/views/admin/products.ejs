@@ -1,0 +1,74 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="container section">
+  <nav class="crumbs muted small"><a href="/">Home</a> / <a href="/admin">Admin</a> / <b>Catalog</b></nav>
+  <div class="admin-layout">
+    <aside class="card pad admin-side">
+      <h3>Back office</h3>
+      <a class="link block-link" href="/admin">Dashboard</a>
+      <a class="link block-link active-link" href="/admin/products">Catalog</a>
+      <a class="link block-link" href="/admin/orders">Orders</a>
+      <a class="link block-link" href="/admin/users">Customers</a>
+      <a class="link block-link" href="/admin/import">XML import</a>
+    </aside>
+
+    <div>
+      <h1>Catalog management</h1>
+
+      <div class="card pad" style="margin-bottom:16px">
+        <h3 id="pf-title">Add product</h3>
+        <form method="post" action="/admin/products/save" id="product-form">
+          <input type="hidden" name="id" id="pf-id" value="">
+          <div class="form-row">
+            <label>Name <input class="input" name="name" id="pf-name" required></label>
+            <label>Category
+              <select class="input" name="category_id" id="pf-category">
+                <option value="">—</option>
+                <% for (const c of categories) { %><option value="<%= c.id %>"><%= c.name %></option><% } %>
+              </select>
+            </label>
+          </div>
+          <label>Description <textarea class="input" name="description" id="pf-desc" rows="2"></textarea></label>
+          <div class="form-row three">
+            <label>Price (EGP) <input class="input" type="number" step="0.01" name="price" id="pf-price" required></label>
+            <label>Stock <input class="input" type="number" name="stock" id="pf-stock" value="0"></label>
+            <label class="check-label"><input type="checkbox" name="featured" id="pf-featured"> Featured on home</label>
+          </div>
+          <label>Image URL <input class="input" name="image_url" id="pf-image" value="/img/products/placeholder.svg"></label>
+          <div class="form-row">
+            <button class="btn btn-primary" type="submit">Save product</button>
+            <button class="btn btn-ghost" type="button" onclick="syncProductImage()">Sync photo from URL…</button>
+          </div>
+          <div class="form-row" id="sync-row" style="display:none">
+            <input class="input" id="image-url-source" placeholder="http://supplier.example/photos/item.jpg">
+          </div>
+          <pre id="sync-result" class="small muted" style="white-space:pre-wrap"></pre>
+        </form>
+      </div>
+
+      <div class="card pad">
+        <table class="table">
+          <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th style="text-align:right">Actions</th></tr></thead>
+          <tbody>
+            <% for (const p of products) { %>
+              <tr>
+                <td><%= p.id %></td>
+                <td><%= p.name %></td>
+                <td class="muted"><%= p.category_name || '—' %></td>
+                <td>EGP <%= Number(p.price).toFixed(2) %></td>
+                <td><%= p.stock %></td>
+                <td style="text-align:right; white-space:nowrap">
+                  <button class="btn btn-outline btn-sm" onclick='editProduct(<%= JSON.stringify({id:p.id,name:p.name,description:p.description,price:Number(p.price),stock:p.stock,image_url:p.image_url,category_id:p.category_id,featured:p.featured}) %>)'>Edit</button>
+                  <button class="btn btn-ghost btn-sm" onclick="deleteProduct(<%= p.id %>)">Delete</button>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/foot') %>

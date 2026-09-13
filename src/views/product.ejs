@@ -1,0 +1,109 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<%
+  const avgRating = reviews.length
+    ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
+    : null;
+%>
+
+<section class="container section">
+  <nav class="crumbs muted small">
+    <a href="/">Home</a> / <a href="/products">Catalog</a> /
+    <%= product.category_name ? `<a href="/products?category=${product.category_id}">${product.category_name}</a> /` : '' %>
+    <%= product.name %>
+  </nav>
+
+  <div class="product-layout">
+    <div class="card product-media">
+      <img src="<%= product.image_url %>" alt="<%= product.name %>">
+    </div>
+
+    <div class="product-info">
+      <span class="chip"><%= product.category_name || 'Store' %></span>
+      <h1><%= product.name %></h1>
+
+      <div class="rating-row">
+        <% if (avgRating) { %>
+          <span class="stars">★★★★★</span>
+          <b><%= avgRating %></b><span class="muted">(<%= reviews.length %> review<%= reviews.length === 1 ? '' : 's' %>)</span>
+        <% } else { %>
+          <span class="muted">No reviews yet — be the first!</span>
+        <% } %>
+      </div>
+
+      <p class="price price-xl">EGP <%= Number(product.price).toFixed(2) %></p>
+      <p class="stock-note <%= product.stock > 0 ? 'stock-ok' : 'stock-bad' %>">
+        <%= product.stock > 0 ? `In stock · ${product.stock} available` : 'Currently on backorder' %>
+      </p>
+
+      <form class="buy-box" onsubmit="addToCart(event, <%= product.id %>)">
+        <label class="qty-label">Qty
+          <input class="input qty-input" type="number" id="qty-<%= product.id %>" value="1" min="1" max="99">
+        </label>
+        <button class="btn btn-primary btn-lg" type="submit">Add to cart</button>
+      </form>
+
+      <div class="perks-mini muted small">
+        Free shipping over EGP 500 · Delivered in 2–4 days · 30-day returns
+      </div>
+    </div>
+  </div>
+
+  <div class="section-two-col">
+    <div class="card pad">
+      <h2>Description</h2>
+      <p class="desc"><%= product.description %></p>
+    </div>
+
+    <div class="card pad">
+      <h2>Reviews (<%= reviews.length %>)</h2>
+
+      <div id="review-list">
+        <% for (const r of reviews) { %>
+          <article class="review">
+            <header class="row-between">
+              <b><%= r.display_name || r.username %></b>
+              <span class="stars-sm"><%= '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) %></span>
+            </header>
+            <% /* Reviews are shown exactly as the community writes them */ %>
+            <p class="review-body"><%- r.body %></p>
+            <% if (r.image_path) { %>
+              <img class="review-img" src="<%= r.image_path %>" alt="attachment">
+            <% } %>
+            <time class="muted small"><%= new Date(r.created_at).toISOString().slice(0,10) %></time>
+          </article>
+        <% } %>
+        <% if (reviews.length === 0) { %><p class="muted">No reviews yet.</p><% } %>
+      </div>
+
+      <hr>
+
+      <% if (user) { %>
+        <h3>Write a review</h3>
+        <form id="review-form" method="post" action="/product/<%= product.id %>/review" enctype="multipart/form-data">
+          <div class="form-row">
+            <label>Rating
+              <select class="input" name="rating">
+                <option value="5">★★★★★ (5)</option>
+                <option value="4">★★★★☆ (4)</option>
+                <option value="3">★★★☆☆ (3)</option>
+                <option value="2">★★☆☆☆ (2)</option>
+                <option value="1">★☆☆☆☆ (1)</option>
+              </select>
+            </label>
+            <label>Attach a photo <span class="muted small">(optional)</span>
+              <input class="input" type="file" name="image" accept="image/*">
+            </label>
+          </div>
+          <textarea class="input" name="body" rows="4" placeholder="How is the product holding up?" required></textarea>
+          <button class="btn btn-primary" style="margin-top:10px">Post review</button>
+        </form>
+      <% } else { %>
+        <p class="muted"><a class="link" href="/login?next=/product/<%= product.id %>">Sign in</a> to write a review.</p>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

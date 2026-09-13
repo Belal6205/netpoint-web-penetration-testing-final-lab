@@ -1,0 +1,20 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section auth-wrap">
+  <div class="card pad auth-card">
+    <h1>Choose a new password</h1>
+
+    <% if (typeof err !== 'undefined' && err) { %><div class="alert alert-bad"><%= err %></div><% } %>
+
+    <form method="post" action="/reset">
+      <input type="hidden" name="token" value="<%= token %>">
+      <label>New password <span class="muted small">(up to 8 characters)</span>
+        <input class="input" type="password" name="password" maxlength="8" required autofocus>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg">Update password</button>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

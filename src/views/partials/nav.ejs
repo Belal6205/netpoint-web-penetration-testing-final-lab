@@ -1,0 +1,46 @@
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="/">
+      <span class="brand-mark">N</span>
+      <span>NetPoint<b>Store</b></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="/" class="<%= typeof title !== 'undefined' && title === 'Home' ? 'active' : '' %>">Home</a>
+      <a href="/products" class="<%= typeof title !== 'undefined' && title.indexOf('Catalog') === 0 ? 'active' : '' %>">Catalog</a>
+      <a href="/leaderboard">Top reviewers</a>
+      <a href="/contact">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <% if (user) { %>
+        <a class="cart-link" href="/cart" aria-label="Cart">
+          Cart
+          <span class="badge"><%= cartCount %></span>
+        </a>
+        <div class="user-menu">
+          <button type="button" class="user-btn"><%= user.display_name || user.username %> ▾</button>
+          <div class="dropdown">
+            <a href="/profile">My profile</a>
+            <a href="/orders">My orders</a>
+            <% /* Admin panel link is shown to staff accounts only */ %>
+            <% if (user.role === 'admin') { %>
+              <hr>
+              <a href="/admin">Admin panel</a>
+            <% } %>
+            <hr>
+            <a href="/logout">Sign out</a>
+          </div>
+        </div>
+      <% } else { %>
+        <a class="btn btn-outline btn-sm" href="/login">Sign in</a>
+        <a class="btn btn-primary btn-sm" href="/register">Create account</a>
+      <% } %>
+    </div>
+  </div>
+</header>
+
+<% if (flashMsg) { %><div class="container flash"><div class="alert alert-ok"><%= flashMsg %></div></div><% } %>
+<% if (flashErr) { %><div class="container flash"><div class="alert alert-bad"><%= flashErr %></div></div><% } %>
+
+<main>

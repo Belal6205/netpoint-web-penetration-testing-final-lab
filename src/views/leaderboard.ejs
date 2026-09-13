@@ -1,0 +1,25 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section narrow">
+  <h1>Top reviewers</h1>
+  <p class="muted">Our most active community members this season.</p>
+
+  <div class="card pad">
+    <table class="table">
+      <thead><tr><th>#</th><th>Reviewer</th><th>Reviews</th><th>Avg rating</th></tr></thead>
+      <tbody>
+        <% let rank = 1; for (const l of leaders) { %>
+          <tr>
+            <td><b><%= rank++ %></b></td>
+            <td><b><%= l.display_name || l.username %></b> <span class="muted small">@<%= l.username %></span></td>
+            <td><%= l.review_count %></td>
+            <td><span class="stars-sm"><%= '★'.repeat(Math.round(l.avg_rating)) %></span> <%= l.avg_rating %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

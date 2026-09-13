@@ -1,0 +1,58 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">New season · New gear</p>
+      <h1>Network your world,<br>worry-free.</h1>
+      <p class="lead">Routers, switches, mesh Wi-Fi and security cameras — hand-picked by people who actually run networks for a living.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="/products">Shop the catalog</a>
+        <a class="btn btn-ghost btn-lg" href="/products?category=4">Explore mesh Wi-Fi</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="hero-card">
+        <span class="dot dot-green"></span> Free delivery over EGP 500<br>
+        <span class="dot dot-blue"></span> 30-day no-questions returns<br>
+        <span class="dot dot-orange"></span> 2-year warranty on everything
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <h2>Featured this week</h2>
+    <a class="link" href="/products">View all →</a>
+  </div>
+  <div class="grid grid-4">
+    <% for (const p of featured) { %>
+      <a class="card product-card" href="/product/<%= p.id %>">
+        <div class="thumb"><img src="<%= p.image_url %>" alt="<%= p.name %>" loading="lazy"></div>
+        <div class="card-body">
+          <span class="chip"><%= p.category_name || 'Store' %></span>
+          <h3><%= p.name %></h3>
+          <div class="row-between">
+            <strong class="price">EGP <%= Number(p.price).toFixed(2) %></strong>
+            <span class="stock-ok"><%= p.stock > 0 ? 'In stock' : 'Backorder' %></span>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="perks">
+    <div><b>🚚 Fast shipping</b><span class="muted">Same-day dispatch before 3pm</span></div>
+    <div><b>🛠 Real support</b><span class="muted">Engineers answer the phone</span></div>
+    <div><b>💳 Secure checkout</b><span class="muted">Cards, wallets & COD</span></div>
+    <div><b>↩ Easy returns</b><span class="muted">30 days, prepaid label</span></div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

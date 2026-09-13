@@ -1,0 +1,23 @@
+-- phpMyAdmin SQL dump (partial export taken 2024-11-02 during migration)
+-- Host: localhost  Database: netpoint
+-- NOTE: stale copy kept in web root after the migration weekend. Delete me.
+
+CREATE TABLE `users` (
+  `id` int AUTO_INCREMENT PRIMARY KEY,
+  `username` varchar(32) NOT NULL UNIQUE,
+  `email` varchar(128) NOT NULL,
+  `password_hash` char(32) NOT NULL,
+  `role` enum('customer','admin') DEFAULT 'customer'
+);
+
+INSERT INTO `users` (`id`,`username`,`email`,`password_hash`,`role`) VALUES
+(1,'admin','admin@netpoint.store','0192023a7bbd73250516f069df18b500','admin'),
+(2,'sarah.j','sarah.j@example.com','d41e98d1eafa6d6011d3a70f1a5b92f0','customer'),
+(3,'mike_t','mike_t@example.com','0e311e5b9704f28b4e8557e8fa3fbe7d','customer'),
+(4,'emma.w','emma.w@example.com','b696aef7776367787253dc2acdd10279','customer'),
+(5,'dkim','dkim@example.com','bec92397646e8feb93667ae2e6bc931b','customer'),
+(6,'priya.s','priya.s@example.com','619bf34f1bf1fc2678a131aac8a068f7','customer');
+
+INSERT INTO `coupons` (`code`,`percent_off`,`max_uses`) VALUES
+('WELCOME10',10,NULL),
+('BLACKFRIDAY30',30,NULL);

@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<section class="container section auth-wrap">
+  <div class="card pad auth-card">
+    <h1>Create account</h1>
+    <p class="muted">One minute to set up. WELCOME10 coupon included with every new account.</p>
+
+    <% if (typeof err !== 'undefined' && err) { %><div class="alert alert-bad"><%= err %></div><% } %>
+
+    <form method="post" action="/register">
+      <label>Username
+        <input class="input" type="text" name="username" minlength="3" maxlength="24" placeholder="e.g. network_nina" required autofocus>
+      </label>
+      <label>Email address
+        <input class="input" type="email" name="email" placeholder="you@example.com" required>
+      </label>
+      <label>Password <span class="muted small">(up to 8 characters)</span>
+        <input class="input" type="password" name="password" maxlength="8" placeholder="Password" required>
+      </label>
+      <button class="btn btn-primary btn-block btn-lg">Create my account</button>
+    </form>
+
+    <div class="auth-links muted small">
+      Already have an account? <a class="link" href="/login">Sign in</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

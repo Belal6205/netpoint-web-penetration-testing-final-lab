@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="container section">
+  <nav class="crumbs muted small"><a href="/">Home</a> / <b>Admin</b></nav>
+  <div class="admin-layout">
+    <aside class="card pad admin-side">
+      <h3>Back office</h3>
+      <a class="link block-link active-link" href="/admin">Dashboard</a>
+      <a class="link block-link" href="/admin/products">Catalog</a>
+      <a class="link block-link" href="/admin/orders">Orders</a>
+      <a class="link block-link" href="/admin/users">Customers</a>
+      <a class="link block-link" href="/admin/import">XML import</a>
+    </aside>
+
+    <div>
+      <h1>Dashboard</h1>
+      <div class="grid grid-4 stats-grid">
+        <div class="card pad stat-card"><span class="muted small">Customers</span><b><%= counts.users %></b></div>
+        <div class="card pad stat-card"><span class="muted small">Products</span><b><%= counts.products %></b></div>
+        <div class="card pad stat-card"><span class="muted small">Orders</span><b><%= counts.orders %></b></div>
+        <div class="card pad stat-card"><span class="muted small">Revenue</span><b>EGP <%= Number(counts.revenue).toFixed(2) %></b></div>
+      </div>
+
+      <div class="card pad" style="margin-top:16px">
+        <h3>Recent orders</h3>
+        <table class="table">
+          <thead><tr><th>#</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            <% for (const o of recentOrders) { %>
+              <tr>
+                <td><b>#<%= o.id %></b></td>
+                <td>@<%= o.username %></td>
+                <td>EGP <%= Number(o.total).toFixed(2) %></td>
+                <td><span class="badge status-<%= o.status %>"><%= o.status %></span></td>
+                <td class="muted small"><%= new Date(o.created_at).toISOString().slice(0,10) %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/foot') %>

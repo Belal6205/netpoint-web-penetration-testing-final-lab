@@ -1,0 +1,56 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+
+<%
+  // Display-only estimate from catalog prices; the final charge is computed
+  // by the payment provider at submit time.
+  const estimate = items.reduce((s, i) => s + Number(i.db_price) * i.qty, 0);
+%>
+
+<section class="container section">
+  <h1>Checkout</h1>
+  <div class="checkout-layout">
+
+    <form class="card pad" id="checkout-form" onsubmit="placeOrder(event)">
+      <h3>Delivery details</h3>
+      <label>Shipping address
+        <textarea class="input" name="address" rows="2" placeholder="Street, number, district, city"><%= user.address || '' %></textarea>
+      </label>
+
+      <label>Gift note <span class="muted small">(printed right on the invoice — customize it!)</span>
+        <textarea class="input" name="gift_message" rows="3" placeholder="Happy birthday! 🎉"></textarea>
+      </label>
+
+      <label>Coupon codes <span class="muted small">(comma separated)</span>
+        <input class="input" name="coupons" placeholder="WELCOME10, STACK20">
+      </label>
+
+      <h3 style="margin-top:18px">Review your basket</h3>
+      <table class="table">
+        <tbody id="basket-lines">
+          <% for (const it of items) { %>
+            <tr>
+              <td><%= it.name %></td>
+              <td><input class="input qty-input co-qty" data-id="<%= it.product_id %>" data-price="<%= Number(it.db_price).toFixed(2) %>" type="number" value="<%= it.qty %>" min="1" max="99"></td>
+              <td style="text-align:right">EGP <%= Number(it.db_price).toFixed(2) %> ea.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <p class="muted small">Estimated total: <b>EGP <%= estimate.toFixed(2) %></b> — final amount confirmed by our billing service.</p>
+
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Place order · Pay now</button>
+      <p class="muted tiny center-text">This is a demo storefront — no real payment is processed.</p>
+    </form>
+
+    <aside class="card pad summary">
+      <h3>Summary</h3>
+      <div class="row-between"><span class="muted">Items</span><b><%= items.length %></b></div>
+      <div class="row-between"><span class="muted">Shipping</span><b>Free</b></div>
+      <hr>
+      <div class="row-between total-row"><b>Total</b><b class="price">EGP <%= estimate.toFixed(2) %></b></div>
+    </aside>
+  </div>
+</section>
+
+<%- include('partials/foot') %>

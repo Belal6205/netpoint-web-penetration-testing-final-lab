@@ -1,0 +1,41 @@
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h4>NetPoint Store</h4>
+      <p class="muted">Networking gear, smart hardware and everything in between. Family-run since 2016.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <a href="/products?category=1">Routers &amp; Gateways</a>
+      <a href="/products?category=2">Switches</a>
+      <a href="/products?category=3">Cables &amp; Adapters</a>
+      <a href="/products?category=5">Security Cameras</a>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <a href="/contact">Contact us</a>
+      <a href="/leaderboard">Community</a>
+      <a href="/orders">Track orders</a>
+    </div>
+    <div>
+      <h4>Newsletter</h4>
+      <p class="muted">Deals and new arrivals, once a month.</p>
+      <form action="/contact" method="post">
+        <input type="hidden" name="subject" value="Newsletter signup">
+        <input type="hidden" name="message" value="Please add me to the newsletter.">
+        <input class="input" type="email" name="email" placeholder="you@example.com" required>
+        <button class="btn btn-primary btn-sm" style="margin-top:8px">Subscribe</button>
+      </form>
+    </div>
+  </div>
+  <div class="container copyright muted">
+    © <%= new Date().getFullYear() %> NetPoint Store. All rights reserved. · VAT EG-834-2209
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+<script src="/js/main.js"></script>
+</body>
+</html>

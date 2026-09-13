@@ -1,0 +1,45 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<section class="container section">
+  <nav class="crumbs muted small"><a href="/">Home</a> / <a href="/admin">Admin</a> / <b>Orders</b></nav>
+  <div class="admin-layout">
+    <aside class="card pad admin-side">
+      <h3>Back office</h3>
+      <a class="link block-link" href="/admin">Dashboard</a>
+      <a class="link block-link" href="/admin/products">Catalog</a>
+      <a class="link block-link active-link" href="/admin/orders">Orders</a>
+      <a class="link block-link" href="/admin/users">Customers</a>
+      <a class="link block-link" href="/admin/import">XML import</a>
+    </aside>
+
+    <div>
+      <h1>All orders</h1>
+      <div class="card pad">
+        <table class="table">
+          <thead><tr><th>#</th><th>Customer</th><th>Total</th><th>Coupons</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <% for (const o of orders) { %>
+              <tr>
+                <td><b><a class="link" href="/orders/<%= o.id %>">#<%= o.id %></a></b></td>
+                <td>@<%= o.username %></td>
+                <td>EGP <%= Number(o.total).toFixed(2) %></td>
+                <td class="muted"><%= o.coupon_codes || '—' %></td>
+                <td class="muted small"><%= new Date(o.created_at).toISOString().slice(0,10) %></td>
+                <td>
+                  <select class="input input-sm status-select" onchange="setOrderStatus(<%= o.id %>, this)">
+                    <% for (const s of ['processing','paid','shipped','delivered','cancelled','refunded']) { %>
+                      <option value="<%= s %>" <%= o.status === s ? 'selected' : '' %>><%= s %></option>
+                    <% } %>
+                  </select>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/foot') %>
